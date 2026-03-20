@@ -483,6 +483,14 @@ let services = [
 ];
 
 let galleryItems = [
+  { title: 'Corporate Excellence', cat: 'corporate', color: '#D4AF37', height: 'h-48', img: '1.jpeg' },
+  { title: 'Executive Gala', cat: 'corporate', color: '#F5E6B3', height: 'h-52', img: '2.jpeg' },
+  { title: 'Tech Innovation Summit', cat: 'corporate', color: '#E8C7C8', height: 'h-44', img: '3.jpeg' },
+  { title: 'Grand Stage Mandap', cat: 'stage', color: '#D4AF37', height: 'h-56', img: '4.jpeg' },
+  { title: 'Ethereal Backdrop', cat: 'stage', color: '#F5E6B3', height: 'h-48', img: '5.jpeg' },
+  { title: 'Floral Symphony Stage', cat: 'stage', color: '#E8C7C8', height: 'h-52', img: '6.jpeg' },
+  { title: 'Ultra Premium Lounge', cat: 'luxury', color: '#D4AF37', height: 'h-56', img: '7.jpeg' },
+  { title: 'Elite Celebration Suite', cat: 'luxury', color: '#F5E6B3', height: 'h-44', img: '8.jpeg' },
   { title: 'Corporate Gala Night', cat: 'corporate', color: '#D4AF37', height: 'h-48' },
   { title: 'Sunset Engagement', cat: 'engagements', color: '#E8C7C8', height: 'h-44' },
   { title: 'Golden Haldi Ceremony', cat: 'haldi', color: '#F5E6B3', height: 'h-52' },
@@ -555,12 +563,13 @@ function renderGallery(filter) {
   grid.innerHTML = items.map((g, i) => `
     <div class="gallery-item rounded-xl ${g.height} relative cursor-pointer reveal reveal-delay-${Math.min(i % 4 + 1, 5)}"
          style="background: linear-gradient(135deg, ${g.color}22, ${g.color}08); border: 1px solid ${g.color}20;"
-         onclick="openLightbox('${g.title}','${g.cat}','${g.color}')">
+         onclick="openLightbox('${g.title}','${g.cat}','${g.color}', '${g.img || ''}')">
       <div class="absolute inset-0 flex items-center justify-center">
+        ${g.img ? `<img src="${g.img}" class="w-full h-full object-cover" alt="${g.title}">` : `
         <svg width="48" height="48" viewBox="0 0 48 48" fill="none" style="opacity: 0.3;">
           <circle cx="24" cy="24" r="20" stroke="${g.color}" stroke-width="0.8"/>
           <path d="M18 18 L30 24 L18 30Z" fill="${g.color}" opacity="0.4"/>
-        </svg>
+        </svg>`}
       </div>
       <div class="gallery-overlay absolute inset-0 rounded-xl flex flex-col items-center justify-center" style="background: rgba(26,26,26,0.8); backdrop-filter: blur(4px);">
         <p class="font-heading text-lg" style="color: ${g.color};">${g.title}</p>
@@ -572,17 +581,18 @@ function renderGallery(filter) {
   observeReveal();
 }
 
-window.openLightbox = function(title, cat, color) {
+window.openLightbox = function(title, cat, color, img) {
   document.getElementById('lb-title').textContent = title;
   document.getElementById('lb-cat').textContent = cat.charAt(0).toUpperCase() + cat.slice(1);
   document.getElementById('lb-visual').style.background = `linear-gradient(135deg, ${color}33, ${color}11)`;
   document.getElementById('lb-visual').innerHTML = `
     <div class="flex items-center justify-center h-full">
+      ${img ? `<img src="${img}" class="w-full h-full object-cover" alt="${title}">` : `
       <svg width="80" height="80" viewBox="0 0 80 80" fill="none" class="glow-anim">
         <circle cx="40" cy="40" r="35" stroke="${color}" stroke-width="1"/>
         <circle cx="40" cy="40" r="25" stroke="${color}" stroke-width="0.5" opacity="0.5"/>
         <circle cx="40" cy="40" r="8" fill="${color}" opacity="0.3"/>
-      </svg>
+      </svg>`}
     </div>
   `;
   document.getElementById('lightbox').classList.add('active');
