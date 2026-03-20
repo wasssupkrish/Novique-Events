@@ -1,0 +1,872 @@
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Novique Events</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&amp;family=Nunito+Sans:wght@300;400;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+  html { height: 100%; }
+  body { height: 100%; margin: 0; }
+
+  :root {
+    --gold: #D4AF37;
+    --ivory: #F9F6F2;
+    --rose: #E8C7C8;
+    --charcoal: #1A1A1A;
+    --glow: #F5E6B3;
+  }
+
+  * { box-sizing: border-box; }
+
+  .font-heading { font-family: 'Cormorant Garamond', serif; }
+  .font-body { font-family: 'Nunito Sans', sans-serif; }
+
+  /* Scroll reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1), transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.12s; }
+  .reveal-delay-2 { transition-delay: 0.24s; }
+  .reveal-delay-3 { transition-delay: 0.36s; }
+  .reveal-delay-4 { transition-delay: 0.48s; }
+  .reveal-delay-5 { transition-delay: 0.6s; }
+
+  /* Floating animations */
+  @keyframes floatSlow {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-18px) rotate(2deg); }
+  }
+  @keyframes floatMed {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-12px) rotate(-1.5deg); }
+  }
+  @keyframes floatFast {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  @keyframes sparkle {
+    0%, 100% { opacity: 0.2; transform: scale(0.8); }
+    50% { opacity: 1; transform: scale(1.2); }
+  }
+  @keyframes shimmer {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+  }
+  @keyframes gentlePulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+  }
+  @keyframes rotateSlowly {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  @keyframes drawLine {
+    0% { stroke-dashoffset: 1000; }
+    100% { stroke-dashoffset: 0; }
+  }
+  @keyframes fadeInScale {
+    0% { opacity: 0; transform: scale(0.85); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+  @keyframes heroTextReveal {
+    0% { opacity: 0; transform: translateY(30px); letter-spacing: 0.3em; }
+    100% { opacity: 1; transform: translateY(0); letter-spacing: 0.12em; }
+  }
+  @keyframes subtleGlow {
+    0%, 100% { filter: drop-shadow(0 0 8px rgba(212,175,55,0.3)); }
+    50% { filter: drop-shadow(0 0 20px rgba(212,175,55,0.6)); }
+  }
+
+  .float-slow { animation: floatSlow 6s ease-in-out infinite; }
+  .float-med { animation: floatMed 4.5s ease-in-out infinite; }
+  .float-fast { animation: floatFast 3s ease-in-out infinite; }
+
+  .sparkle-anim { animation: sparkle 2.5s ease-in-out infinite; }
+  .sparkle-anim-2 { animation: sparkle 3.2s ease-in-out infinite 0.5s; }
+  .sparkle-anim-3 { animation: sparkle 2.8s ease-in-out infinite 1s; }
+
+  .glow-anim { animation: subtleGlow 3s ease-in-out infinite; }
+
+  /* Button styles */
+  .btn-gold {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #D4AF37, #F5E6B3, #D4AF37);
+    background-size: 200% 200%;
+    color: #1A1A1A;
+    transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .btn-gold:hover {
+    background-size: 300% 300%;
+    animation: shimmer 2s linear infinite;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(212,175,55,0.4);
+  }
+  .btn-gold::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 0; height: 0;
+    background: rgba(255,255,255,0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+  }
+  .btn-gold:active::after {
+    width: 300px; height: 300px;
+  }
+
+  .btn-outline {
+    border: 1.5px solid #D4AF37;
+    color: #D4AF37;
+    transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-outline::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(135deg, rgba(212,175,55,0.1), rgba(245,230,179,0.15));
+    transition: left 0.4s ease;
+  }
+  .btn-outline:hover::before { left: 0; }
+  .btn-outline:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(212,175,55,0.2);
+  }
+
+  /* Service card */
+  .service-card {
+    background: rgba(26,26,26,0.6);
+    border: 1px solid rgba(212,175,55,0.15);
+    backdrop-filter: blur(10px);
+    transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .service-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(212,175,55,0.5);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3), 0 0 30px rgba(212,175,55,0.1);
+  }
+  .service-card:hover .service-icon {
+    transform: scale(1.1) rotate(5deg);
+  }
+  .service-icon {
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* Gallery */
+  .gallery-item {
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.4s ease;
+  }
+  .gallery-item:hover { transform: scale(1.02); }
+  .gallery-item .gallery-overlay {
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .gallery-item:hover .gallery-overlay { opacity: 1; }
+
+  /* Timeline */
+  .timeline-step {
+    transition: all 0.4s ease;
+  }
+  .timeline-step:hover {
+    transform: translateY(-4px);
+  }
+  .timeline-step:hover .step-circle {
+    box-shadow: 0 0 25px rgba(212,175,55,0.5);
+  }
+  .step-circle {
+    transition: box-shadow 0.4s ease;
+  }
+
+  /* Nav */
+  .nav-link {
+    position: relative;
+  }
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px; left: 0;
+    width: 0; height: 1px;
+    background: #D4AF37;
+    transition: width 0.3s ease;
+  }
+  .nav-link:hover::after { width: 100%; }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: #1A1A1A; }
+  ::-webkit-scrollbar-thumb { background: #D4AF37; border-radius: 3px; }
+
+  /* Lightbox */
+  .lightbox {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+  }
+  .lightbox.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Parallax container */
+  .parallax-layer {
+    will-change: transform;
+    transition: transform 0.1s linear;
+  }
+
+  /* Decorative divider */
+  .gold-divider {
+    width: 80px; height: 1px;
+    background: linear-gradient(90deg, transparent, #D4AF37, transparent);
+  }
+
+  .filter-btn {
+    transition: all 0.3s ease;
+    border: 1px solid rgba(212,175,55,0.2);
+  }
+  .filter-btn.active, .filter-btn:hover {
+    background: rgba(212,175,55,0.15);
+    border-color: #D4AF37;
+    color: #D4AF37;
+  }
+
+  /* Smooth scroll */
+  html { scroll-behavior: smooth; }
+
+  .hero-text-anim {
+    animation: heroTextReveal 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    opacity: 0;
+  }
+  .hero-delay-1 { animation-delay: 0.3s; }
+  .hero-delay-2 { animation-delay: 0.6s; }
+  .hero-delay-3 { animation-delay: 0.9s; }
+  .hero-delay-4 { animation-delay: 1.2s; }
+
+  /* Mobile nav */
+  .mobile-nav {
+    transform: translateX(100%);
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .mobile-nav.open { transform: translateX(0); }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full font-body" style="background-color: #1A1A1A; color: #F9F6F2;">
+  <div id="app-wrapper" class="w-full h-full overflow-auto" style="overflow-x: hidden;"><!-- Navigation -->
+   <nav id="main-nav" class="fixed top-0 left-0 w-full z-50 transition-all duration-500" style="background: transparent;">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between"><a href="#hero" class="font-heading text-2xl tracking-widest" style="color: #D4AF37;"> <span id="nav-brand">NOVIQUE</span> </a>
+     <div class="hidden md:flex items-center gap-8"><a href="#about" class="nav-link font-body text-sm tracking-wider" style="color: #F9F6F2;">About</a> <a href="#services" class="nav-link font-body text-sm tracking-wider" style="color: #F9F6F2;">Services</a> <a href="#portfolio" class="nav-link font-body text-sm tracking-wider" style="color: #F9F6F2;">Portfolio</a> <a href="#journey" class="nav-link font-body text-sm tracking-wider" style="color: #F9F6F2;">Experience</a> <a href="#contact" class="btn-gold font-body text-sm tracking-wider px-6 py-2 rounded-full" style="text-decoration: none;">Contact</a>
+     </div><button id="mobile-menu-btn" class="md:hidden" style="color: #D4AF37;" aria-label="Open menu"> <i data-lucide="menu" style="width:28px;height:28px;"></i> </button>
+    </div>
+   </nav><!-- Mobile Nav -->
+   <div id="mobile-nav" class="mobile-nav fixed top-0 right-0 w-72 h-full z-50" style="background: rgba(26,26,26,0.97); backdrop-filter: blur(20px);">
+    <div class="p-6 flex justify-end"><button id="mobile-close-btn" style="color: #D4AF37;" aria-label="Close menu"> <i data-lucide="x" style="width:28px;height:28px;"></i> </button>
+    </div>
+    <div class="flex flex-col items-center gap-8 mt-12"><a href="#about" class="mobile-nav-link font-heading text-xl tracking-wider" style="color: #F9F6F2;">About</a> <a href="#services" class="mobile-nav-link font-heading text-xl tracking-wider" style="color: #F9F6F2;">Services</a> <a href="#portfolio" class="mobile-nav-link font-heading text-xl tracking-wider" style="color: #F9F6F2;">Portfolio</a> <a href="#journey" class="mobile-nav-link font-heading text-xl tracking-wider" style="color: #F9F6F2;">Experience</a> <a href="#contact" class="mobile-nav-link btn-gold font-body text-sm tracking-wider px-6 py-2 rounded-full mt-4" style="text-decoration: none;">Contact</a>
+    </div>
+   </div><!-- ====== HERO SECTION ====== -->
+   <section id="hero" class="relative w-full" style="height: 100%; min-height: 600px;"><!-- Background gradient layers -->
+    <div class="absolute inset-0" style="background: radial-gradient(ellipse at 50% 30%, rgba(212,175,55,0.08) 0%, transparent 60%);"></div>
+    <div class="absolute inset-0" style="background: radial-gradient(ellipse at 80% 70%, rgba(232,199,200,0.06) 0%, transparent 50%);"></div><!-- Floating decorative SVGs -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none"><!-- Floral arch left -->
+     <svg class="absolute float-slow parallax-layer" style="left: 3%; top: 15%; width: 180px; opacity: 0.25;" viewbox="0 0 200 300" fill="none"><path d="M100 280 C60 220 10 180 20 120 C30 60 70 30 100 10 C130 30 170 60 180 120 C190 180 140 220 100 280Z" stroke="#D4AF37" stroke-width="1" fill="none" style="stroke-dasharray: 1000; animation: drawLine 4s ease forwards;" /> <circle cx="60" cy="100" r="12" stroke="#E8C7C8" stroke-width="0.8" fill="none" class="sparkle-anim" /> <circle cx="140" cy="100" r="12" stroke="#E8C7C8" stroke-width="0.8" fill="none" class="sparkle-anim-2" /> <circle cx="100" cy="50" r="8" stroke="#D4AF37" stroke-width="0.8" fill="none" class="sparkle-anim-3" /> <path d="M70 150 Q85 130 100 150 Q115 130 130 150" stroke="#D4AF37" stroke-width="0.8" fill="none" /> <path d="M60 180 Q80 160 100 180 Q120 160 140 180" stroke="#E8C7C8" stroke-width="0.6" fill="none" />
+     </svg><!-- Fairy lights top -->
+     <svg class="absolute float-fast" style="top: 8%; left: 20%; width: 60%; opacity: 0.2;" viewbox="0 0 600 60" fill="none"><path d="M0 10 Q75 50 150 15 Q225 50 300 10 Q375 50 450 15 Q525 50 600 10" stroke="#F5E6B3" stroke-width="0.8" fill="none" /> <circle cx="75" cy="32" r="4" fill="#F5E6B3" class="sparkle-anim" /> <circle cx="150" cy="15" r="3" fill="#D4AF37" class="sparkle-anim-2" /> <circle cx="225" cy="35" r="4" fill="#F5E6B3" class="sparkle-anim-3" /> <circle cx="300" cy="12" r="3" fill="#D4AF37" class="sparkle-anim" /> <circle cx="375" cy="35" r="4" fill="#F5E6B3" class="sparkle-anim-2" /> <circle cx="450" cy="15" r="3" fill="#D4AF37" class="sparkle-anim-3" /> <circle cx="525" cy="35" r="4" fill="#F5E6B3" class="sparkle-anim" />
+     </svg><!-- Mandap / stage silhouette center -->
+     <svg class="absolute parallax-layer" style="bottom: 5%; left: 50%; transform: translateX(-50%); width: 500px; max-width: 80%; opacity: 0.08;" viewbox="0 0 500 300" fill="none"><rect x="100" y="250" width="300" height="8" rx="4" fill="#D4AF37" /> <rect x="120" y="100" width="10" height="150" fill="#D4AF37" /> <rect x="370" y="100" width="10" height="150" fill="#D4AF37" /> <path d="M115 100 Q250 20 385 100" stroke="#D4AF37" stroke-width="2" fill="none" /> <path d="M130 110 Q250 40 370 110" stroke="#F5E6B3" stroke-width="1" fill="none" /> <!-- Decorative drape --> <path d="M125 100 Q180 130 250 115 Q320 130 375 100" stroke="#E8C7C8" stroke-width="0.8" fill="none" /> <!-- Hanging elements --> <line x1="200" y1="80" x2="200" y2="110" stroke="#F5E6B3" stroke-width="0.5" /> <circle cx="200" cy="113" r="3" fill="#F5E6B3" class="sparkle-anim" /> <line x1="250" y1="65" x2="250" y2="95" stroke="#F5E6B3" stroke-width="0.5" /> <circle cx="250" cy="98" r="3" fill="#D4AF37" class="sparkle-anim-2" /> <line x1="300" y1="80" x2="300" y2="110" stroke="#F5E6B3" stroke-width="0.5" /> <circle cx="300" cy="113" r="3" fill="#F5E6B3" class="sparkle-anim-3" />
+     </svg><!-- Floral right -->
+     <svg class="absolute float-med" style="right: 5%; top: 25%; width: 140px; opacity: 0.2;" viewbox="0 0 150 200" fill="none"><path d="M75 180 Q30 140 20 90 Q10 40 75 10 Q140 40 130 90 Q120 140 75 180Z" stroke="#E8C7C8" stroke-width="0.8" fill="none" /> <circle cx="75" cy="60" r="15" stroke="#D4AF37" stroke-width="0.6" fill="none" class="sparkle-anim" /> <path d="M55 80 Q75 65 95 80" stroke="#D4AF37" stroke-width="0.6" fill="none" /> <path d="M45 110 Q75 90 105 110" stroke="#E8C7C8" stroke-width="0.5" fill="none" />
+     </svg><!-- Champagne glasses -->
+     <svg class="absolute float-slow" style="right: 15%; bottom: 20%; width: 80px; opacity: 0.15;" viewbox="0 0 80 100" fill="none"><path d="M25 60 L25 85 M55 60 L55 85 M15 85 L65 85" stroke="#D4AF37" stroke-width="1" stroke-linecap="round" /> <path d="M15 60 Q15 30 25 10 L35 10 Q25 30 25 60Z" stroke="#F5E6B3" stroke-width="0.8" fill="rgba(245,230,179,0.1)" /> <path d="M45 60 Q45 30 55 10 L65 10 Q55 30 55 60Z" stroke="#F5E6B3" stroke-width="0.8" fill="rgba(245,230,179,0.1)" /> <!-- Clink sparkle --> <circle cx="40" cy="20" r="3" fill="#F5E6B3" class="sparkle-anim" /> <line x1="37" y1="12" x2="34" y2="6" stroke="#F5E6B3" stroke-width="0.5" /> <line x1="43" y1="12" x2="46" y2="6" stroke="#F5E6B3" stroke-width="0.5" /> <line x1="40" y1="14" x2="40" y2="7" stroke="#F5E6B3" stroke-width="0.5" />
+     </svg><!-- Sparkle particles scattered -->
+     <div class="absolute sparkle-anim" style="top: 20%; left: 30%; width: 4px; height: 4px; background: #F5E6B3; border-radius: 50%;"></div>
+     <div class="absolute sparkle-anim-2" style="top: 40%; left: 70%; width: 3px; height: 3px; background: #D4AF37; border-radius: 50%;"></div>
+     <div class="absolute sparkle-anim-3" style="top: 60%; left: 20%; width: 3px; height: 3px; background: #E8C7C8; border-radius: 50%;"></div>
+     <div class="absolute sparkle-anim" style="top: 30%; right: 25%; width: 4px; height: 4px; background: #F5E6B3; border-radius: 50%;"></div>
+     <div class="absolute sparkle-anim-2" style="top: 70%; left: 60%; width: 3px; height: 3px; background: #D4AF37; border-radius: 50%;"></div>
+     <div class="absolute sparkle-anim-3" style="top: 15%; right: 35%; width: 2px; height: 2px; background: #F5E6B3; border-radius: 50%;"></div>
+    </div><!-- Hero content -->
+    <div class="relative z-10 flex flex-col items-center justify-center h-full text-center px-6">
+     <div class="gold-divider mx-auto mb-6 hero-text-anim hero-delay-1"></div>
+     <h1 id="hero-brand" class="font-heading text-5xl sm:text-6xl md:text-8xl font-light tracking-widest hero-text-anim hero-delay-2" style="color: #D4AF37;">Novique Events</h1>
+     <p id="hero-tagline" class="font-body text-sm sm:text-base md:text-lg tracking-wider mt-6 max-w-xl hero-text-anim hero-delay-3" style="color: rgba(249,246,242,0.7);">Designing unforgettable weddings and extraordinary celebrations.</p>
+     <div class="flex flex-col sm:flex-row gap-4 mt-10 hero-text-anim hero-delay-4"><a href="#contact" id="btn-primary" class="btn-gold font-body text-sm tracking-widest px-8 py-3 rounded-full font-semibold">Plan Your Event</a> <a href="#portfolio" id="btn-secondary" class="btn-outline font-body text-sm tracking-widest px-8 py-3 rounded-full font-semibold">View Our Work</a>
+     </div>
+    </div><!-- Scroll indicator -->
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2" style="animation: gentlePulse 2s ease-in-out infinite;"><span class="font-body text-xs tracking-widest" style="color: rgba(212,175,55,0.5);">SCROLL</span> <i data-lucide="chevron-down" style="width:18px; height:18px; color: rgba(212,175,55,0.5);"></i>
+    </div>
+   </section><!-- ====== ABOUT SECTION ====== -->
+   <section id="about" class="relative w-full py-24 md:py-32">
+    <div class="absolute inset-0" style="background: radial-gradient(ellipse at 30% 50%, rgba(232,199,200,0.04) 0%, transparent 60%);"></div>
+    <div class="max-w-6xl mx-auto px-6 relative z-10">
+     <div class="text-center mb-20 reveal"><span class="font-body text-xs tracking-[0.3em] uppercase" style="color: #D4AF37;">Who We Are</span>
+      <h2 id="about-heading" class="font-heading text-4xl md:text-6xl font-light mt-4" style="color: #F9F6F2;">Our Story</h2>
+      <div class="gold-divider mx-auto mt-6"></div>
+     </div>
+     <div class="grid md:grid-cols-2 gap-16 items-center">
+      <div class="reveal reveal-delay-1">
+       <p id="about-description" class="font-body text-base leading-relaxed mb-6" style="color: rgba(249,246,242,0.75);">At Novique Events, we believe every celebration tells a unique story. With a passion for perfection and an eye for exquisite detail, we transform your most cherished visions into breathtaking realities that linger in memory forever.</p>
+       <p class="font-body text-base leading-relaxed" style="color: rgba(249,246,242,0.6);">From intimate gatherings to grand celebrations, our team of seasoned planners, designers, and coordinators orchestrate every element with precision, creativity, and unmatched elegance.</p>
+      </div><!-- Process journey illustration -->
+      <div class="grid grid-cols-2 gap-6">
+       <div class="reveal reveal-delay-1 text-center p-6 rounded-2xl" style="background: rgba(212,175,55,0.05); border: 1px solid rgba(212,175,55,0.1);">
+        <svg class="mx-auto mb-4 glow-anim" width="48" height="48" viewbox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="20" stroke="#D4AF37" stroke-width="1" /> <path d="M16 24 L22 30 L32 18" stroke="#D4AF37" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /> <circle cx="24" cy="8" r="2" fill="#F5E6B3" class="sparkle-anim" />
+        </svg>
+        <h3 class="font-heading text-lg" style="color: #D4AF37;">Concept</h3>
+        <p class="font-body text-xs mt-2" style="color: rgba(249,246,242,0.5);">Dreaming your vision</p>
+       </div>
+       <div class="reveal reveal-delay-2 text-center p-6 rounded-2xl" style="background: rgba(232,199,200,0.05); border: 1px solid rgba(232,199,200,0.1);">
+        <svg class="mx-auto mb-4 glow-anim" width="48" height="48" viewbox="0 0 48 48" fill="none"><rect x="10" y="10" width="28" height="28" rx="4" stroke="#E8C7C8" stroke-width="1" /> <path d="M18 20 L30 20 M18 26 L26 26 M18 32 L24 32" stroke="#E8C7C8" stroke-width="1" stroke-linecap="round" /> <circle cx="36" cy="12" r="2" fill="#F5E6B3" class="sparkle-anim-2" />
+        </svg>
+        <h3 class="font-heading text-lg" style="color: #E8C7C8;">Design</h3>
+        <p class="font-body text-xs mt-2" style="color: rgba(249,246,242,0.5);">Crafting the blueprint</p>
+       </div>
+       <div class="reveal reveal-delay-3 text-center p-6 rounded-2xl" style="background: rgba(245,230,179,0.05); border: 1px solid rgba(245,230,179,0.1);">
+        <svg class="mx-auto mb-4 glow-anim" width="48" height="48" viewbox="0 0 48 48" fill="none"><path d="M24 8 L24 40" stroke="#F5E6B3" stroke-width="1" /> <path d="M16 16 Q24 24 32 16" stroke="#F5E6B3" stroke-width="1" fill="none" /> <path d="M14 24 Q24 32 34 24" stroke="#D4AF37" stroke-width="1" fill="none" /> <circle cx="24" cy="8" r="3" stroke="#D4AF37" stroke-width="0.8" fill="none" class="sparkle-anim-3" />
+        </svg>
+        <h3 class="font-heading text-lg" style="color: #F5E6B3;">Preparation</h3>
+        <p class="font-body text-xs mt-2" style="color: rgba(249,246,242,0.5);">Perfecting every detail</p>
+       </div>
+       <div class="reveal reveal-delay-4 text-center p-6 rounded-2xl" style="background: rgba(212,175,55,0.05); border: 1px solid rgba(212,175,55,0.1);">
+        <svg class="mx-auto mb-4 glow-anim" width="48" height="48" viewbox="0 0 48 48" fill="none"><path d="M24 38 L18 28 Q12 18 18 12 Q24 6 30 12 Q36 18 30 28Z" stroke="#D4AF37" stroke-width="1" fill="none" /> <circle cx="24" cy="20" r="4" stroke="#F5E6B3" stroke-width="0.8" fill="none" class="sparkle-anim" /> <path d="M16 40 Q24 36 32 40" stroke="#D4AF37" stroke-width="1" fill="none" /> <!-- confetti --> <line x1="12" y1="14" x2="8" y2="10" stroke="#E8C7C8" stroke-width="0.5" /> <line x1="36" y1="14" x2="40" y2="10" stroke="#E8C7C8" stroke-width="0.5" /> <circle cx="10" cy="8" r="1.5" fill="#E8C7C8" class="sparkle-anim-2" /> <circle cx="38" cy="8" r="1.5" fill="#F5E6B3" class="sparkle-anim-3" />
+        </svg>
+        <h3 class="font-heading text-lg" style="color: #D4AF37;">Celebration</h3>
+        <p class="font-body text-xs mt-2" style="color: rgba(249,246,242,0.5);">Magical moments unfold</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- ====== SERVICES SECTION ====== -->
+   <section id="services" class="relative w-full py-24 md:py-32">
+    <div class="absolute inset-0" style="background: linear-gradient(180deg, rgba(26,26,26,1) 0%, rgba(30,25,20,1) 50%, rgba(26,26,26,1) 100%);"></div>
+    <div class="max-w-7xl mx-auto px-6 relative z-10">
+     <div class="text-center mb-20 reveal"><span class="font-body text-xs tracking-[0.3em] uppercase" style="color: #D4AF37;">What We Offer</span>
+      <h2 id="services-heading" class="font-heading text-4xl md:text-6xl font-light mt-4" style="color: #F9F6F2;">Our Services</h2>
+      <div class="gold-divider mx-auto mt-6"></div>
+     </div>
+     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" id="services-grid"><!-- Services rendered by JS -->
+     </div>
+    </div>
+   </section><!-- ====== PORTFOLIO SECTION ====== -->
+   <section id="portfolio" class="relative w-full py-24 md:py-32">
+    <div class="max-w-7xl mx-auto px-6 relative z-10">
+     <div class="text-center mb-12 reveal"><span class="font-body text-xs tracking-[0.3em] uppercase" style="color: #D4AF37;">Our Creations</span>
+      <h2 class="font-heading text-4xl md:text-6xl font-light mt-4" style="color: #F9F6F2;">Portfolio</h2>
+      <div class="gold-divider mx-auto mt-6"></div>
+     </div><!-- Filters -->
+     <div class="flex flex-wrap justify-center gap-3 mb-12 reveal reveal-delay-1" id="filter-container"><button class="filter-btn active font-body text-xs tracking-wider px-5 py-2 rounded-full" style="color: #D4AF37;" data-filter="all">All</button> <button class="filter-btn font-body text-xs tracking-wider px-5 py-2 rounded-full" style="color: rgba(249,246,242,0.6);" data-filter="corporate">Corporate</button> <button class="filter-btn font-body text-xs tracking-wider px-5 py-2 rounded-full" style="color: rgba(249,246,242,0.6);" data-filter="weddings">Weddings</button> <button class="filter-btn font-body text-xs tracking-wider px-5 py-2 rounded-full" style="color: rgba(249,246,242,0.6);" data-filter="engagements">Engagements</button> <button class="filter-btn font-body text-xs tracking-wider px-5 py-2 rounded-full" style="color: rgba(249,246,242,0.6);" data-filter="haldi">Haldi / Mehendi</button> <button class="filter-btn font-body text-xs tracking-wider px-5 py-2 rounded-full" style="color: rgba(249,246,242,0.6);" data-filter="stage">Stage Decor</button> <button class="filter-btn font-body text-xs tracking-wider px-5 py-2 rounded-full" style="color: rgba(249,246,242,0.6);" data-filter="luxury">Luxury Setups</button>
+     </div> <!-- Gallery grid -->
+     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" id="gallery-grid"><!-- Rendered by JS -->
+     </div>
+    </div>
+   </section><!-- ====== EVENT JOURNEY SECTION ====== -->
+   <section id="journey" class="relative w-full py-24 md:py-32">
+    <div class="absolute inset-0" style="background: radial-gradient(ellipse at 60% 40%, rgba(212,175,55,0.04) 0%, transparent 60%);"></div>
+    <div class="max-w-5xl mx-auto px-6 relative z-10">
+     <div class="text-center mb-20 reveal"><span class="font-body text-xs tracking-[0.3em] uppercase" style="color: #D4AF37;">Your Journey</span>
+      <h2 class="font-heading text-4xl md:text-6xl font-light mt-4" style="color: #F9F6F2;">The Experience</h2>
+      <div class="gold-divider mx-auto mt-6"></div>
+     </div>
+     <div class="relative"><!-- Vertical line -->
+      <div class="absolute left-6 md:left-1/2 top-0 bottom-0 w-px" style="background: linear-gradient(180deg, transparent, #D4AF37, transparent);"></div>
+      <div id="timeline-container" class="space-y-16"><!-- Rendered by JS -->
+      </div>
+     </div>
+    </div>
+   </section><!-- ====== TESTIMONIALS ====== -->
+   <section class="relative w-full py-24 md:py-32" style="background: linear-gradient(180deg, rgba(26,26,26,1), rgba(30,22,18,1), rgba(26,26,26,1));">
+    <div class="max-w-4xl mx-auto px-6 text-center relative z-10">
+     <div class="reveal"><span class="font-body text-xs tracking-[0.3em] uppercase" style="color: #D4AF37;">Testimonials</span>
+      <h2 class="font-heading text-4xl md:text-5xl font-light mt-4 mb-16" style="color: #F9F6F2;">Words of Love</h2>
+     </div>
+     <div id="testimonial-area" class="relative" style="min-height: 200px;"><!-- Rendered by JS -->
+     </div>
+     <div class="flex justify-center gap-3 mt-10" id="testimonial-dots"><!-- Rendered by JS -->
+     </div>
+    </div>
+   </section><!-- ====== CONTACT SECTION ====== -->
+   <section id="contact" class="relative w-full py-24 md:py-32">
+    <div class="absolute inset-0" style="background: radial-gradient(ellipse at 40% 60%, rgba(232,199,200,0.04) 0%, transparent 60%);"></div>
+    <div class="max-w-4xl mx-auto px-6 relative z-10">
+     <div class="text-center mb-16 reveal"><span class="font-body text-xs tracking-[0.3em] uppercase" style="color: #D4AF37;">Get In Touch</span>
+      <h2 class="font-heading text-4xl md:text-6xl font-light mt-4" style="color: #F9F6F2;">Begin Your Story</h2>
+      <div class="gold-divider mx-auto mt-6"></div>
+     </div>
+     <form id="contact-form" class="reveal reveal-delay-1 rounded-3xl p-8 md:p-12" style="background: rgba(249,246,242,0.03); border: 1px solid rgba(212,175,55,0.15);">
+      <div class="grid md:grid-cols-2 gap-6 mb-6">
+       <div><label for="c-name" class="font-body text-xs tracking-wider block mb-2" style="color: rgba(249,246,242,0.6);">Your Name</label> <input type="text" id="c-name" class="w-full font-body text-sm px-4 py-3 rounded-lg outline-none focus:ring-1" style="background: rgba(249,246,242,0.05); border: 1px solid rgba(212,175,55,0.15); color: #F9F6F2; --tw-ring-color: #D4AF37;" placeholder="Full name">
+       </div>
+       <div><label for="c-phone" class="font-body text-xs tracking-wider block mb-2" style="color: rgba(249,246,242,0.6);">Phone Number</label> <input type="tel" id="c-phone" class="w-full font-body text-sm px-4 py-3 rounded-lg outline-none focus:ring-1" style="background: rgba(249,246,242,0.05); border: 1px solid rgba(212,175,55,0.15); color: #F9F6F2; --tw-ring-color: #D4AF37;" placeholder="+91 (000) 000-0000">
+       </div>
+      </div>
+      <div class="grid md:grid-cols-2 gap-6 mb-6">
+       <div><label for="c-date" class="font-body text-xs tracking-wider block mb-2" style="color: rgba(249,246,242,0.6);">Event Date</label> <input type="date" id="c-date" class="w-full font-body text-sm px-4 py-3 rounded-lg outline-none focus:ring-1" style="background: rgba(249,246,242,0.05); border: 1px solid rgba(212,175,55,0.15); color: #F9F6F2; --tw-ring-color: #D4AF37;">
+       </div>
+       <div><label for="c-type" class="font-body text-xs tracking-wider block mb-2" style="color: rgba(249,246,242,0.6);">Event Type</label> <select id="c-type" class="w-full font-body text-sm px-4 py-3 rounded-lg outline-none focus:ring-1" style="background: rgba(249,246,242,0.05); border: 1px solid rgba(212,175,55,0.15); color: #F9F6F2; --tw-ring-color: #D4AF37;"> <option value="" style="background:#1A1A1A;">Select event type</option> <option value="wedding" style="background:#1A1A1A;">Wedding</option> <option value="engagement" style="background:#1A1A1A;">Engagement</option> <option value="corporate" style="background:#1A1A1A;">Corporate Event</option> <option value="birthday" style="background:#1A1A1A;">Birthday / Anniversary</option> <option value="other" style="background:#1A1A1A;">Other</option> </select>
+       </div>
+      </div>
+      <div class="mb-6"><label for="c-message" class="font-body text-xs tracking-wider block mb-2" style="color: rgba(249,246,242,0.6);">Tell Us About Your Vision</label> <textarea id="c-message" rows="4" class="w-full font-body text-sm px-4 py-3 rounded-lg outline-none focus:ring-1 resize-none" style="background: rgba(249,246,242,0.05); border: 1px solid rgba(212,175,55,0.15); color: #F9F6F2; --tw-ring-color: #D4AF37;" placeholder="Describe your dream event..."></textarea>
+      </div>
+      <div class="text-center"><button type="submit" class="btn-gold font-body text-sm tracking-widest px-12 py-3 rounded-full font-semibold">Send Inquiry</button>
+      </div>
+      <div id="form-success" class="hidden text-center mt-6">
+       <p class="font-heading text-xl" style="color: #D4AF37;">Thank you! ✨</p>
+       <p class="font-body text-sm mt-2" style="color: rgba(249,246,242,0.6);">We'll be in touch to begin crafting your celebration.</p>
+      </div>
+     </form>
+    </div>
+   </section><!-- ====== FOOTER ====== -->
+   <footer class="w-full py-16" style="border-top: 1px solid rgba(212,175,55,0.1);">
+    <div class="max-w-6xl mx-auto px-6">
+     <div class="grid md:grid-cols-3 gap-12 mb-12">
+      <div>
+       <h3 class="font-heading text-2xl tracking-wider mb-4" style="color: #D4AF37;">Novique Events</h3>
+       <p class="font-body text-sm leading-relaxed" style="color: rgba(249,246,242,0.5);">Crafting extraordinary celebrations with elegance, passion, and impeccable attention to detail.</p>
+      </div>
+      <div>
+       <h4 class="font-body text-xs tracking-[0.2em] uppercase mb-4" style="color: #D4AF37;">Quick Links</h4>
+       <div class="flex flex-col gap-2"><a href="#about" class="font-body text-sm" style="color: rgba(249,246,242,0.5); text-decoration: none;">About Us</a> <a href="#services" class="font-body text-sm" style="color: rgba(249,246,242,0.5); text-decoration: none;">Services</a> <a href="#portfolio" class="font-body text-sm" style="color: rgba(249,246,242,0.5); text-decoration: none;">Portfolio</a> <a href="#contact" class="font-body text-sm" style="color: rgba(249,246,242,0.5); text-decoration: none;">Contact</a>
+       </div>
+      </div>
+      <div>
+       <h4 class="font-body text-xs tracking-[0.2em] uppercase mb-4" style="color: #D4AF37;">Follow Us</h4>
+       <div class="flex gap-4" id="social-icons"><a href="#" class="w-10 h-10 rounded-full flex items-center justify-center" style="border: 1px solid rgba(212,175,55,0.3); color: #D4AF37; transition: all 0.3s;" aria-label="Instagram"> <i data-lucide="instagram" style="width:18px; height:18px;"></i> </a> <a href="#" class="w-10 h-10 rounded-full flex items-center justify-center" style="border: 1px solid rgba(212,175,55,0.3); color: #D4AF37; transition: all 0.3s;" aria-label="Facebook"> <i data-lucide="facebook" style="width:18px; height:18px;"></i> </a> <a href="#" class="w-10 h-10 rounded-full flex items-center justify-center" style="border: 1px solid rgba(212,175,55,0.3); color: #D4AF37; transition: all 0.3s;" aria-label="Twitter"> <i data-lucide="twitter" style="width:18px; height:18px;"></i> </a>
+       </div>
+      </div>
+     </div>
+     <div class="text-center pt-8" style="border-top: 1px solid rgba(212,175,55,0.08);">
+      <p class="font-body text-xs" style="color: rgba(249,246,242,0.3);">© 2025 Novique Events. All rights reserved. Crafted with ♥</p>
+     </div>
+    </div>
+   </footer><!-- Lightbox -->
+   <div id="lightbox" class="lightbox fixed inset-0 z-50 flex items-center justify-center" style="background: rgba(0,0,0,0.9);"><button id="lightbox-close" class="absolute top-6 right-6" style="color: #F9F6F2;" aria-label="Close lightbox"> <i data-lucide="x" style="width:32px; height:32px;"></i> </button>
+    <div id="lightbox-content" class="max-w-3xl w-full mx-6 rounded-2xl overflow-hidden" style="background: #1A1A1A; border: 1px solid rgba(212,175,55,0.2);">
+     <div class="p-8 text-center">
+      <h3 id="lb-title" class="font-heading text-2xl" style="color: #D4AF37;"></h3>
+      <p id="lb-cat" class="font-body text-sm mt-2" style="color: rgba(249,246,242,0.5);"></p>
+      <div id="lb-visual" class="mt-6 rounded-xl overflow-hidden" style="height: 300px;"></div>
+     </div>
+    </div>
+   </div>
+  </div>
+  <script type="module">
+import { db } from './firebase-config.js';
+import { collection, getDocs, addDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+// ─── Data (Fallbacks) ───
+let services = [
+  { name: 'Corporate Events', desc: 'Sophisticated corporate galas, launches, and networking events.', icon: 'briefcase', gradient: 'linear-gradient(135deg, rgba(232,199,200,0.1), rgba(212,175,55,0.12))' },
+  { name: 'Wedding Planning', desc: 'End-to-end luxury wedding orchestration tailored to your unique love story.', icon: 'heart', gradient: 'linear-gradient(135deg, rgba(212,175,55,0.15), rgba(232,199,200,0.1))' },
+  { name: 'Stage Decoration', desc: 'Breathtaking mandaps, stages, and backdrops that set the scene.', icon: 'sparkles', gradient: 'linear-gradient(135deg, rgba(232,199,200,0.15), rgba(245,230,179,0.1))' },
+  { name: 'Lighting & DJ', desc: 'Atmospheric lighting design and premium entertainment setups.', icon: 'zap', gradient: 'linear-gradient(135deg, rgba(245,230,179,0.15), rgba(212,175,55,0.1))' },
+  { name: 'Floral Design', desc: 'Exquisite floral arrangements that bring nature\'s elegance to life.', icon: 'flower-2', gradient: 'linear-gradient(135deg, rgba(232,199,200,0.2), rgba(212,175,55,0.05))' },
+  { name: 'Catering Coordination', desc: 'Curated culinary experiences from the finest caterers and chefs.', icon: 'utensils', gradient: 'linear-gradient(135deg, rgba(212,175,55,0.12), rgba(232,199,200,0.08))' },
+  { name: 'Event Logistics', desc: 'Seamless coordination of venues, transport, and hospitality.', icon: 'map-pin', gradient: 'linear-gradient(135deg, rgba(245,230,179,0.12), rgba(232,199,200,0.08))' },
+  { name: 'Luxury Concepts', desc: 'Bespoke destination weddings and ultra-premium celebrations.', icon: 'crown', gradient: 'linear-gradient(135deg, rgba(212,175,55,0.18), rgba(245,230,179,0.08))' },
+  { name: 'Birthdays & More', desc: 'Milestone celebrations designed with joy, style, and flair.', icon: 'cake', gradient: 'linear-gradient(135deg, rgba(245,230,179,0.15), rgba(232,199,200,0.1))' },
+];
+
+let galleryItems = [
+  { title: 'Corporate Gala Night', cat: 'corporate', color: '#D4AF37', height: 'h-48' },
+  { title: 'Sunset Engagement', cat: 'engagements', color: '#E8C7C8', height: 'h-44' },
+  { title: 'Golden Haldi Ceremony', cat: 'haldi', color: '#F5E6B3', height: 'h-52' },
+  { title: 'Royal Garden Wedding', cat: 'weddings', color: '#D4AF37', height: 'h-56' },
+  { title: 'Floral Stage Paradise', cat: 'stage', color: '#E8C7C8', height: 'h-56' },
+  { title: 'Luxury Beach Setup', cat: 'luxury', color: '#F5E6B3', height: 'h-44' },
+  { title: 'Tech Summit', cat: 'corporate', color: '#F5E6B3', height: 'h-44' },
+  { title: 'Mehendi Festivities', cat: 'haldi', color: '#E8C7C8', height: 'h-48' },
+  { title: 'Diamond Anniversary', cat: 'luxury', color: '#D4AF37', height: 'h-56' },
+  { title: 'Palace Wedding', cat: 'weddings', color: '#D4AF37', height: 'h-52' },
+  { title: 'Fairytale Engagement', cat: 'engagements', color: '#E8C7C8', height: 'h-52' },
+  { title: 'Crystal Stage', cat: 'stage', color: '#D4AF37', height: 'h-48' },
+];
+
+let timelineSteps = [
+  { num: '01', title: 'Consultation', desc: 'We begin with an intimate conversation to understand your vision, preferences, and dreams.', icon: 'message-circle' },
+  { num: '02', title: 'Concept Design', desc: 'Our creative team crafts a bespoke concept board with themes, colors, and artistic direction.', icon: 'palette' },
+  { num: '03', title: 'Planning & Coordination', desc: 'Every detail is meticulously planned — venues, vendors, timelines, and logistics.', icon: 'clipboard-list' },
+  { num: '04', title: 'Setup & Decoration', desc: 'Our artisans transform spaces into breathtaking wonderlands of elegance.', icon: 'paintbrush' },
+  { num: '05', title: 'Event Execution', desc: 'On the day, our team ensures every moment flows flawlessly and beautifully.', icon: 'play-circle' },
+  { num: '06', title: 'Celebration', desc: 'Sit back and cherish every magical moment — you deserve it.', icon: 'party-popper' },
+];
+
+let testimonials = [
+  { text: '"Novique Events turned our dream wedding into a fairytale reality. Every detail was absolutely perfect."', author: 'Priya & Rohan', role: 'Wedding, Mumbai' },
+  { text: '"The level of creativity and professionalism was beyond anything we imagined. Simply extraordinary."', author: 'Anita Sharma', role: 'Anniversary Celebration' },
+  { text: '"Our corporate gala was the talk of the industry. Novique delivered elegance at every level."', author: 'Vikram Mehta', role: 'CEO, TechCorp' },
+];
+
+// ─── Firebase Fetchers ───
+async function loadData() {
+  try {
+    const sSnap = await getDocs(query(collection(db, "services"), orderBy("order", "asc")));
+    if (!sSnap.empty) services = sSnap.docs.map(doc => doc.data());
+
+    const gSnap = await getDocs(query(collection(db, "portfolio"), orderBy("order", "asc")));
+    if (!gSnap.empty) galleryItems = gSnap.docs.map(doc => doc.data());
+
+    const tSnap = await getDocs(query(collection(db, "testimonials"), orderBy("order", "asc")));
+    if (!tSnap.empty) testimonials = tSnap.docs.map(doc => doc.data());
+
+    // Re-render everything with new data
+    init();
+  } catch (e) {
+    console.error("Error loading Firestore data, using fallbacks:", e);
+    init();
+  }
+}
+
+// ─── Render Services ───
+function renderServices() {
+  const grid = document.getElementById('services-grid');
+  grid.innerHTML = services.map((s, i) => `
+    <div class="service-card rounded-2xl p-8 reveal reveal-delay-${Math.min(i % 3 + 1, 5)}" style="background: ${s.gradient};">
+      <div class="service-icon w-14 h-14 rounded-xl flex items-center justify-center mb-5" style="background: rgba(212,175,55,0.1); border: 1px solid rgba(212,175,55,0.2);">
+        <i data-lucide="${s.icon}" style="width:24px; height:24px; color: #D4AF37;"></i>
+      </div>
+      <h3 class="font-heading text-xl mb-3" style="color: #F9F6F2;">${s.name}</h3>
+      <p class="font-body text-sm leading-relaxed" style="color: rgba(249,246,242,0.6);">${s.desc}</p>
+    </div>
+  `).join('');
+}
+
+// ─── Render Gallery ───
+let activeFilter = 'all';
+function renderGallery(filter) {
+  activeFilter = filter;
+  const grid = document.getElementById('gallery-grid');
+  const items = filter === 'all' ? galleryItems : galleryItems.filter(g => g.cat === filter);
+  grid.innerHTML = items.map((g, i) => `
+    <div class="gallery-item rounded-xl ${g.height} relative cursor-pointer reveal reveal-delay-${Math.min(i % 4 + 1, 5)}"
+         style="background: linear-gradient(135deg, ${g.color}22, ${g.color}08); border: 1px solid ${g.color}20;"
+         onclick="openLightbox('${g.title}','${g.cat}','${g.color}')">
+      <div class="absolute inset-0 flex items-center justify-center">
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" style="opacity: 0.3;">
+          <circle cx="24" cy="24" r="20" stroke="${g.color}" stroke-width="0.8"/>
+          <path d="M18 18 L30 24 L18 30Z" fill="${g.color}" opacity="0.4"/>
+        </svg>
+      </div>
+      <div class="gallery-overlay absolute inset-0 rounded-xl flex flex-col items-center justify-center" style="background: rgba(26,26,26,0.8); backdrop-filter: blur(4px);">
+        <p class="font-heading text-lg" style="color: ${g.color};">${g.title}</p>
+        <span class="font-body text-xs mt-1 capitalize" style="color: rgba(249,246,242,0.5);">${g.cat}</span>
+      </div>
+    </div>
+  `).join('');
+  lucide.createIcons();
+  observeReveal();
+}
+
+window.openLightbox = function(title, cat, color) {
+  document.getElementById('lb-title').textContent = title;
+  document.getElementById('lb-cat').textContent = cat.charAt(0).toUpperCase() + cat.slice(1);
+  document.getElementById('lb-visual').style.background = `linear-gradient(135deg, ${color}33, ${color}11)`;
+  document.getElementById('lb-visual').innerHTML = `
+    <div class="flex items-center justify-center h-full">
+      <svg width="80" height="80" viewBox="0 0 80 80" fill="none" class="glow-anim">
+        <circle cx="40" cy="40" r="35" stroke="${color}" stroke-width="1"/>
+        <circle cx="40" cy="40" r="25" stroke="${color}" stroke-width="0.5" opacity="0.5"/>
+        <circle cx="40" cy="40" r="8" fill="${color}" opacity="0.3"/>
+      </svg>
+    </div>
+  `;
+  document.getElementById('lightbox').classList.add('active');
+}
+
+// ─── Render Timeline ───
+function renderTimeline() {
+  const container = document.getElementById('timeline-container');
+  container.innerHTML = timelineSteps.map((s, i) => {
+    const isLeft = i % 2 === 0;
+    return `
+      <div class="timeline-step relative flex items-start gap-6 reveal reveal-delay-${Math.min(i + 1, 5)} ${isLeft ? 'md:flex-row' : 'md:flex-row-reverse'}" style="padding-left: 3.5rem; ${!isLeft ? 'md:padding-left: 0; md:padding-right: 3.5rem;' : ''}">
+        <div class="absolute left-4 md:left-1/2 md:-translate-x-1/2 step-circle w-5 h-5 rounded-full flex items-center justify-center" style="background: #D4AF37; box-shadow: 0 0 15px rgba(212,175,55,0.3); top: 4px;">
+          <div class="w-2 h-2 rounded-full" style="background: #1A1A1A;"></div>
+        </div>
+        <div class="flex-1 ${isLeft ? 'md:text-right md:pr-12' : 'md:text-left md:pl-12'}">
+          <span class="font-heading text-3xl font-light" style="color: rgba(212,175,55,0.3);">${s.num}</span>
+          <h3 class="font-heading text-xl mt-1" style="color: #D4AF37;">${s.title}</h3>
+          <p class="font-body text-sm mt-2 leading-relaxed" style="color: rgba(249,246,242,0.6);">${s.desc}</p>
+        </div>
+        <div class="hidden md:block flex-1"></div>
+      </div>
+    `;
+  }).join('');
+}
+
+// ─── Render Testimonials ───
+let currentTestimonial = 0;
+function renderTestimonial(index) {
+  currentTestimonial = index;
+  const area = document.getElementById('testimonial-area');
+  const t = testimonials[index];
+  if (!t) return; // Added check for undefined testimonial
+  area.innerHTML = `
+    <div style="animation: fadeInScale 0.6s ease forwards;">
+      <svg class="mx-auto mb-6" width="40" height="40" viewBox="0 0 40 40" fill="none">
+        <path d="M8 24 Q8 16 16 12 L18 15 Q14 18 14 22 L18 22 L18 30 L8 30Z" fill="rgba(212,175,55,0.3)"/>
+        <path d="M22 24 Q22 16 30 12 L32 15 Q28 18 28 22 L32 22 L32 30 L22 30Z" fill="rgba(212,175,55,0.3)"/>
+      </svg>
+      <p class="font-heading text-xl md:text-2xl font-light leading-relaxed italic" style="color: rgba(249,246,242,0.85);">${t.text}</p>
+      <div class="mt-8">
+        <p class="font-body text-sm font-semibold" style="color: #D4AF37;">${t.author}</p>
+        <p class="font-body text-xs mt-1" style="color: rgba(249,246,242,0.4);">${t.role}</p>
+      </div>
+    </div>
+  `;
+  renderTestimonialDots();
+}
+
+function renderTestimonialDots() {
+  const dots = document.getElementById('testimonial-dots');
+  dots.innerHTML = testimonials.map((_, i) => `
+    <button class="w-2 h-2 rounded-full transition-all duration-300" aria-label="Testimonial ${i+1}"
+      style="background: ${i === currentTestimonial ? '#D4AF37' : 'rgba(212,175,55,0.2)'}; ${i === currentTestimonial ? 'width: 24px;' : ''}"
+      onclick="renderTestimonial(${i})"></button>
+  `).join('');
+}
+window.renderTestimonial = renderTestimonial; // Make globally accessible
+
+// ─── Events & Init ───
+document.getElementById('lightbox-close').addEventListener('click', () => {
+  document.getElementById('lightbox').classList.remove('active');
+});
+document.getElementById('lightbox').addEventListener('click', (e) => {
+  if (e.target === document.getElementById('lightbox')) {
+    document.getElementById('lightbox').classList.remove('active');
+  }
+});
+
+// ─── Gallery Filters ───
+document.getElementById('filter-container').addEventListener('click', (e) => {
+  const btn = e.target.closest('.filter-btn');
+  if (!btn) return;
+  document.querySelectorAll('.filter-btn').forEach(b => {
+    b.classList.remove('active');
+    b.style.color = 'rgba(249,246,242,0.6)';
+  });
+  btn.classList.add('active');
+  btn.style.color = '#D4AF37';
+  renderGallery(btn.dataset.filter);
+});
+
+// ─── Nav ───
+const nav = document.getElementById('main-nav');
+const wrapper = document.getElementById('app-wrapper');
+wrapper.addEventListener('scroll', () => {
+  if (wrapper.scrollTop > 80) {
+    nav.style.background = 'rgba(26,26,26,0.95)';
+    nav.style.backdropFilter = 'blur(20px)';
+    nav.style.borderBottom = '1px solid rgba(212,175,55,0.1)';
+  } else {
+    nav.style.background = 'transparent';
+    nav.style.backdropFilter = 'none';
+    nav.style.borderBottom = 'none';
+  }
+});
+
+// Mobile nav
+document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+  document.getElementById('mobile-nav').classList.add('open');
+});
+document.getElementById('mobile-close-btn').addEventListener('click', () => {
+  document.getElementById('mobile-nav').classList.remove('open');
+});
+document.querySelectorAll('.mobile-nav-link').forEach(link => {
+  link.addEventListener('click', () => {
+    document.getElementById('mobile-nav').classList.remove('open');
+  });
+});
+
+// ─── Form ───
+document.getElementById('contact-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const formData = {
+    name: document.getElementById('c-name').value,
+    phone_number: document.getElementById('c-phone').value,
+    event_date: document.getElementById('c-date').value,
+    event_type: document.getElementById('c-type').value,
+    message: document.getElementById('c-message').value,
+    created_at: new Date(),
+    status: 'new'
+  };
+
+  try {
+    await addDoc(collection(db, "inquiries"), formData);
+    document.getElementById('form-success').classList.remove('hidden');
+    e.target.querySelectorAll('input, select, textarea').forEach(el => el.value = '');
+    setTimeout(() => {
+      document.getElementById('form-success').classList.add('hidden');
+    }, 4000);
+  } catch (err) {
+    console.error("Error submitting inquiry:", err);
+    alert("Something went wrong. Please try again later.");
+  }
+});
+
+// ─── Scroll Reveal Observer ───
+function observeReveal() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal:not(.visible)').forEach(el => observer.observe(el));
+}
+
+// ─── Parallax (simple mouse-based) ───
+document.addEventListener('mousemove', (e) => {
+  const layers = document.querySelectorAll('.parallax-layer');
+  const x = (e.clientX / window.innerWidth - 0.5) * 20;
+  const y = (e.clientY / window.innerHeight - 0.5) * 20;
+  layers.forEach((layer, i) => {
+    const speed = (i + 1) * 0.5;
+    layer.style.transform = `translate(${x * speed}px, ${y * speed}px)`;
+  });
+});
+
+// ─── Testimonial auto-rotate ───
+setInterval(() => {
+  renderTestimonial((currentTestimonial + 1) % testimonials.length);
+}, 6000);
+
+// ─── Init ───
+function init() {
+  renderServices();
+  renderGallery('all');
+  renderTimeline();
+  renderTestimonial(0);
+  lucide.createIcons();
+  observeReveal();
+}
+
+// Start app
+loadData();
+
+// ─── Element SDK (Modified for Module) ───
+const defaultConfig = {
+  brand_name: 'Novique Events',
+  hero_tagline: 'Designing unforgettable weddings and extraordinary celebrations.',
+  about_title: 'Our Story',
+  about_text: 'At Novique Events, we believe every celebration tells a unique story. With a passion for perfection and an eye for exquisite detail, we transform your most cherished visions into breathtaking realities that linger in memory forever.',
+  services_title: 'Our Services',
+  cta_primary: 'Plan Your Event',
+  cta_secondary: 'View Our Work',
+  background_color: '#1A1A1A',
+  surface_color: '#D4AF37',
+  text_color: '#F9F6F2',
+  primary_action_color: '#D4AF37',
+  secondary_action_color: '#E8C7C8',
+  font_family: 'Cormorant Garamond',
+  font_size: 16,
+};
+
+async function applyConfig(config) {
+  const c = { ...defaultConfig, ...config };
+
+  // Text
+  const heroBrand = document.getElementById('hero-brand');
+  if (heroBrand) heroBrand.textContent = c.brand_name;
+  const navBrand = document.getElementById('nav-brand');
+  if (navBrand) navBrand.textContent = c.brand_name.toUpperCase();
+  const heroTagline = document.getElementById('hero-tagline');
+  if (heroTagline) heroTagline.textContent = c.hero_tagline;
+  const aboutHeading = document.getElementById('about-heading');
+  if (aboutHeading) aboutHeading.textContent = c.about_title;
+  const aboutDesc = document.getElementById('about-description');
+  if (aboutDesc) aboutDesc.textContent = c.about_text;
+  const servicesHeading = document.getElementById('services-heading');
+  if (servicesHeading) servicesHeading.textContent = c.services_title;
+  const btnPrimary = document.getElementById('btn-primary');
+  if (btnPrimary) btnPrimary.textContent = c.cta_primary;
+  const btnSecondary = document.getElementById('btn-secondary');
+  if (btnSecondary) btnSecondary.textContent = c.cta_secondary;
+
+  // Colors
+  document.body.style.backgroundColor = c.background_color;
+
+  // Font
+  const fontStack = `${c.font_family}, Cormorant Garamond, serif`;
+  document.querySelectorAll('.font-heading').forEach(el => {
+    el.style.fontFamily = fontStack;
+  });
+
+  // Font size
+  const base = c.font_size || 16;
+  document.documentElement.style.fontSize = base + 'px';
+}
+
+if (window.elementSdk) {
+  window.elementSdk.init({
+    defaultConfig,
+    onConfigChange: applyConfig,
+    mapToCapabilities: (config) => {
+      const c = { ...defaultConfig, ...config };
+      return {
+        recolorables: [
+          {
+            get: () => c.background_color,
+            set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); }
+          },
+          {
+            get: () => c.surface_color,
+            set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); }
+          },
+          {
+            get: () => c.text_color,
+            set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); }
+          },
+          {
+            get: () => c.primary_action_color,
+            set: (v) => { config.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); }
+          },
+          {
+            get: () => c.secondary_action_color,
+            set: (v) => { config.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); }
+          },
+        ],
+        borderables: [],
+        fontEditable: {
+          get: () => c.font_family,
+          set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+        },
+        fontSizeable: {
+          get: () => c.font_size,
+          set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+        },
+      };
+    },
+    mapToEditPanelValues: (config) => {
+      const c = { ...defaultConfig, ...config };
+      return new Map([
+        ['brand_name', c.brand_name],
+        ['hero_tagline', c.hero_tagline],
+        ['about_title', c.about_title],
+        ['about_text', c.about_text],
+        ['services_title', c.services_title],
+        ['cta_primary', c.cta_primary],
+        ['cta_secondary', c.cta_secondary],
+      ]);
+    },
+  });
+}
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9de6748ca2636d2f',t:'MTc3Mzg2MDE2NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
